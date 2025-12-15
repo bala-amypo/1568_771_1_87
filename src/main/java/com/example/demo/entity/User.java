@@ -45,4 +45,28 @@ public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
 }
 
+public long getId() {
+    return id;
+}
+
+public String getFullName() {
+    return fullName;
+}
+
+public String getEmail() {
+    return email;
+}
+
+public String getPassword() {
+    return password;
+}
+
+public String getRole() {
+    return role;
+}
+
+public LocalDateTime getCreatedAt() {
+    return createdAt;
+}
+
 
