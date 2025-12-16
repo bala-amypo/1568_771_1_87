@@ -1,1 +1,3 @@
-public interface Activity
+public interface ActivityCategoryService{
+    
+}
