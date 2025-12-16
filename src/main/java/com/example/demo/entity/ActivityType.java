@@ -2,18 +2,19 @@ package com.example.demo.entity;
 
 import java.time.LocalDateTime;
 
-public class ActivityCategory {
+public class ActivityType {
     private long id;
     private String categoryName;
-    private String description;
+    private String unit;
+    //category(Many-to-One)
     private LocalDateTime createdAt;
 
-    public ActivityCategory(){}
+    public ActivityType(){}
 
-    public ActivityCategory(long id, String categoryName, String description, LocalDateTime createdAt) {
+    public ActivityType(long id, String categoryName, String unit, LocalDateTime createdAt) {
         this.id = id;
         this.categoryName = categoryName;
-        this.description = description;
+        this.unit = unit;
         this.createdAt = createdAt;
     }
 
@@ -25,8 +26,8 @@ public class ActivityCategory {
         this.categoryName = categoryName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -41,8 +42,8 @@ public class ActivityCategory {
         return categoryName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getUnit() {
+        return unit;
     }
 
     public LocalDateTime getCreatedAt() {
