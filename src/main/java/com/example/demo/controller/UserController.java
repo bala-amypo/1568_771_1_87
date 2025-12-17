@@ -21,4 +21,6 @@ public class UserController {
         User u = userService.registerUser(user);
         return ResponseEntity.status(201).body(u);
     }
+
+    
 }
