@@ -1,40 +1,36 @@
 package com.example.demo.service.Implementation;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-    List<User> list=new ArrayList<>();
+    @Autowired
+    private UserRepository userRepository;
 
+    @Override
     public User registerUser(User user){
-        list.add(user);
-        return user;
+        return userRepository.save(user);
     }
     
-    public User getUser(long id){
-        for(User li:list){
-            if(li.getId()==id){
-                return li;
-            }
-        }
-        return null;
+    @Override
+    public Optional<User> getUser(long id){
+        return userRepository.findById(id);
     }
 
+    @Override
     public List<User> getAllUsers(){
-        return list;
+        return userRepository.findAll();
     }
-    public User getByEmail(String email){
-        for(User li:list){
-            if(li.getEmail()==email){
-                return li;
-            }
-        }
-        return null;
+    @Override
+    public Optional<User> getByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 }
