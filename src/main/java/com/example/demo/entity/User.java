@@ -1,12 +1,14 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.Id;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 @Entity
 @Table(name="user")
 public class User {
+    @Id
     private long id;
     private String fullName;
     private String email;
