@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
-import javax.validation.ValidationException;
-
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,12 +19,11 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> registerUser(@RequestBody User user) {
-        try {
-            User u = userService.registerUser(user);
-            return ResponseEntity.status(201).body(u);
-        } catch (ValidationException e) {
-            return ResponseEntity.status(400).body(null);
+        User u = userService.registerUser(user);
+        if (u == null) {
+            return ResponseEntity.status(400).body(null); // Return bad request if registration fails
         }
+        return ResponseEntity.status(201).body(u);
     }
 
     @GetMapping("/{id}")

@@ -12,8 +12,6 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
-import javax.validation.ValidationException;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -29,17 +27,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new ValidationException("Email already in use");
+            return null; // Return null for duplicate email
         }
 
         if (user.getPassword().length() < 8) {
-            throw new ValidationException("Password must be at least 8 characters");
+            return null; // Return null for password length validation
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (user.getRole() == null || user.getRole().isEmpty()) {
-            user.setRole("USER");
+            user.setRole("USER"); // Set default role
         }
 
         if (user.getCreatedAt() == null) {
