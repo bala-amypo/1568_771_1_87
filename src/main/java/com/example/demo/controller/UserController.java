@@ -1,40 +1,41 @@
 package com.example.demo.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User u = userService.registerUser(user);
-        if (u == null) {
-            return ResponseEntity.status(400).body(null); // Invalid registration
+        try {
+            User savedUser = userService.registerUser(user);
+            return ResponseEntity.status(201).body(savedUser);
+        } catch (ValidationException ex) {
+            return ResponseEntity.badRequest().body(null);
         }
-        return ResponseEntity.status(201).body(u);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<User>> getUser(@PathVariable long id) {
-        Optional<User> u = userService.getUser(id);
-        return u.isPresent() ? ResponseEntity.status(200).body(u) : ResponseEntity.status(404).body(Optional.empty());
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        try {
+            User user = userService.getUser(id).orElseThrow(() -> new ResourceNotFoundException("User not found with ID " + id));
+            return ResponseEntity.ok(user);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(404).body(null);
+        }
     }
 
     @GetMapping
@@ -43,8 +44,8 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<Optional<User>> getByEmail(@PathVariable String email) {
-        Optional<User> u = userService.getByEmail(email);
-        return u.isPresent() ? ResponseEntity.status(200).body(u) : ResponseEntity.status(404).body(Optional.empty());
+    public ResponseEntity<User> getByEmail(@PathVariable String email) {
+        Optional<User> user = userService.getByEmail(email);
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(404).build());
     }
 }
