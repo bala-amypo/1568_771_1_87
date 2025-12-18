@@ -9,9 +9,16 @@ import jakarta.persistence.Table;
 @Table(name="users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+     @Column(name = "full_name", nullable = false)
     private String fullName;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    
     private String password;
     private String role;
     private LocalDateTime createdAt;
