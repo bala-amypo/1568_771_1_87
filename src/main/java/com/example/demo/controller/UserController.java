@@ -17,13 +17,13 @@ public class UserController {
 
     // GET user by ID
     @GetMapping("/{id}")
-    public User getUser(@PathVariable long id) {
+    public User getUserById(@PathVariable long id) {
         return userService.getUser(id);
     }
 
     // GET user by email
-    @GetMapping("/email/{email}")
-    public User getUserByEmail(@PathVariable String email) {
+    @GetMapping("/email")
+    public User getUserByEmail(@RequestParam String email) {
         return userService.getByEmail(email);
     }
 }
