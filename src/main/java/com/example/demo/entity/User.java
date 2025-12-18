@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment strategy
     private long id;
     private String fullName;
     private String email;
@@ -31,7 +30,6 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    // Getter and Setter for id
     public long getId() {
         return id;
     }
@@ -40,7 +38,6 @@ public class User {
         this.id = id;
     }
 
-    // Getter and Setter for fullName
     public String getFullName() {
         return fullName;
     }
@@ -49,7 +46,6 @@ public class User {
         this.fullName = fullName;
     }
 
-    // Getter and Setter for email
     public String getEmail() {
         return email;
     }
@@ -58,7 +54,6 @@ public class User {
         this.email = email;
     }
 
-    // Getter and Setter for password
     public String getPassword() {
         return password;
     }
@@ -67,7 +62,6 @@ public class User {
         this.password = password;
     }
 
-    // Getter and Setter for role
     public String getRole() {
         return role;
     }
@@ -76,7 +70,6 @@ public class User {
         this.role = role;
     }
 
-    // Getter and Setter for createdAt
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

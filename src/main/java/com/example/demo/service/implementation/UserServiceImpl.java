@@ -19,25 +19,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user) {
-        // Check if email is already in use
         if (userRepository.existsByEmail(user.getEmail())) {
-            return null; // Email already in use
+            return null; 
         }
 
-        // Validate password length
         if (user.getPassword().length() < 8) {
-            return null; // Password length too short
+            return null; 
         }
 
-        // Manually encode the password (this is a simplified example, replace with a secure method in production)
-        user.setPassword("ENCODED_" + user.getPassword()); // Simple password encoding for illustration
+        user.setPassword("ENCODED_" + user.getPassword()); 
 
-        // Set default role to "USER" if not provided
         if (user.getRole() == null || user.getRole().isEmpty()) {
             user.setRole("USER");
         }
 
-        // Set current timestamp if not provided
         if (user.getCreatedAt() == null) {
             user.setCreatedAt(LocalDateTime.now());
         }
