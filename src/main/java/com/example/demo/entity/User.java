@@ -9,17 +9,11 @@ import jakarta.persistence.Table;
 @Table(name="users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String fullName;
-
-    @Column(unique = true)
     private String email;
-
     private String password;
-    
-    private String role="USER";
+    private String role;
     private LocalDateTime createdAt;
    
     public User(){}
@@ -81,9 +75,6 @@ public class User {
         return createdAt;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
+    
 
 }
