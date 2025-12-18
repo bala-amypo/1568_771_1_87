@@ -11,12 +11,6 @@ import com.example.demo.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
-
     boolean existsByEmail(String email);
-
-    User save(User user);
-
-    Optional<User> findById(long id);
-
     List<User> findAll();
 }

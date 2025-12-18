@@ -1,9 +1,10 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
-import jakarta.persistence.Id;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.PrePersist;
@@ -13,7 +14,7 @@ import jakarta.persistence.PrePersist;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate ID in the database
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String fullName;
@@ -33,7 +34,7 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    // Getter and Setter methods
+    // Getters and Setters
 
     public long getId() {
         return id;
@@ -86,7 +87,7 @@ public class User {
     @PrePersist
     private void prePersist() {
         if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();  // Automatically set createdAt timestamp if not set
+            this.createdAt = LocalDateTime.now();
         }
     }
 }
