@@ -7,6 +7,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,13 +35,18 @@ public class UserServiceImpl implements UserService {
             user.setRole("USER");
         }
 
-        // NO password encoding (security not in pom)
         return userRepository.save(user);
     }
 
     @Override
     public User getUser(Long id) {
         return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
