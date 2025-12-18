@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import com.example.demo.entity.User;
 
-public interface UserService{
-    public User registerUser(User user);
-    public Optional<User> getUser(long id);
-    public List<User> getAllUsers();
-    public Optional<User> getByEmail(String email);
+public interface UserService {
+    User registerUser(User user);
+    Optional<User> getUser(long id);
+    List<User> getAllUsers();
+    Optional<User> getByEmail(String email);
 }
