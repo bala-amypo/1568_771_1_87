@@ -20,28 +20,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
-    UserService userService;
+        UserService userService;
 
-    @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody User user){
-        User u = userService.registerUser(user);
-        return ResponseEntity.status(201).body(u);
-    }
+            @PostMapping
+                public ResponseEntity<User> registerUser(@RequestBody User user){
+                        User u = userService.registerUser(user);
+                                return ResponseEntity.status(201).body(u);
+                                    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<User>> getUser(@PathVariable int id){
-        Optional<User> u=userService.getUser(id);
-        return ResponseEntity.status(200).body(u);
-    }
-    
-    @GetMapping()
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
-    }
-    @GetMapping("/{email}")
-    public ResponseEntity<Optional<User>> getByEmail(@RequestBody String email){
-        Optional<User> u=userService.getByEmail(email);
-        return ResponseEntity.status(201).body(u);
-    }
-    
-}
+                                        @GetMapping("/{id}")
+                                            public ResponseEntity<Optional<User>> getUser(@PathVariable int id){
+                                                    Optional<User> u=userService.getUser(id);
+                                                            return ResponseEntity.status(200).body(u);
+                                                                }
+                                                                    
+                                                                        @GetMapping()
+                                                                            public List<User> getAllUsers(){
+                                                                                    return userService.getAllUsers();
+                                                                                        }
+                                                                                            @GetMapping("/{email}")
+                                                                                                public ResponseEntity<Optional<User>> getByEmail(@RequestBody String email){
+                                                                                                        Optional<User> u=userService.getByEmail(email);
+                                                                                                                return ResponseEntity.status(201).body(u);
+                                                                                                                    }
+                                                                                                                        
+                                                                                                                        }
+                                                                                                                        
