@@ -12,15 +12,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
 
-    
     private String password;
-    private String role;
+    
+    private String role="USER";
     private LocalDateTime createdAt;
    
     public User(){}
@@ -82,6 +81,9 @@ public class User {
         return createdAt;
     }
 
-    
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
 }
