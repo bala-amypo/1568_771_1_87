@@ -2,7 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityType;
 import com.example.demo.entity.EmissionFactor;
-import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ValidationException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.repository.EmissionFactorRepository;
@@ -26,7 +26,7 @@ public class EmissionFactorServiceImpl implements EmissionFactorService {
         ActivityType type = typeRepository.findById(activityTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         if (factor.getFactorValue() <= 0) {
-            throw new BadRequestException("Factor value must be greater than 0");
+            throw new ValidationException("Factor value must be greater than 0");
         }
         factor.setActivityType(type);
         return factorRepository.save(factor);

@@ -1,7 +1,7 @@
 package com.example.demo.exception;
 
-public class BadRequestException extends RuntimeException {
-    public BadRequestException(String message) {
+public class ValidationException extends RuntimeException {
+    public ValidationException(String message) {
         super(message);
     }
 }

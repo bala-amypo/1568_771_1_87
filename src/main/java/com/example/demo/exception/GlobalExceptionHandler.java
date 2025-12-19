@@ -15,8 +15,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(404).body(Map.of("timestamp",LocalDateTime.now(), "message", ex.getMessage()));
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<?> handleBadRequestException(BadRequestException ex) {
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<?> handleValidationException(ValidationException ex) {
         return ResponseEntity.status(400).body(Map.of("timestamp",LocalDateTime.now(), "message", ex.getMessage()));
     }
 }
