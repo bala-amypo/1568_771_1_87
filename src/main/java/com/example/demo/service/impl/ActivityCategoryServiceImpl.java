@@ -1,8 +1,8 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityCategory;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.ActivityCategoryRepository;
 import com.example.demo.service.ActivityCategoryService;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class ActivityCategoryServiceImpl implements ActivityCategoryService {
     public ActivityCategory createCategory(ActivityCategory category) {
         if (category.getCategoryName() != null &&
             categoryRepository.existsByCategoryName(category.getCategoryName())) {
-            throw new ValidationException("Category name must be unique");
+            throw new BadRequestException("Category name must be unique");
         }
         return categoryRepository.save(category);
     }
