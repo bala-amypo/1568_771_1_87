@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Email already in use");
         }
         if (user.getPassword() != null && user.getPassword().length() > 0 && user.getPassword().length() < 8) {
-            throw new ValidationException("Password must be at least 8 characters");
+            throw new BadRequestException("Password must be at least 8 characters");
         }
         if (user.getRole() == null || user.getRole().isBlank()) {
             user.setRole("USER");
