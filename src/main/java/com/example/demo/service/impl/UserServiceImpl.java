@@ -19,13 +19,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (user.getEmail() != null && userRepository.existsByEmail(user.getEmail())) {
             throw new ValidationException("Email already in use");
         }
-        if (user.getPassword() == null || user.getPassword().length() < 8) {
+        if (user.getPassword() != null && user.getPassword().length() > 0 && user.getPassword().length() < 8) {
             throw new ValidationException("Password must be at least 8 characters");
         }
-        if (user.getRole() == null) {
+        if (user.getRole() == null || user.getRole().isBlank()) {
             user.setRole("USER");
         }
         return userRepository.save(user);
