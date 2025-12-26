@@ -7,7 +7,8 @@ public class ActivityLogRequest {
     private Double quantity;
     private LocalDate activityDate;
 
-    public ActivityLogRequest() {}
+    public ActivityLogRequest() {
+    }
 
     public ActivityLogRequest(Double quantity, LocalDate activityDate) {
         this.quantity = quantity;
