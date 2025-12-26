@@ -62,4 +62,8 @@ public class EmissionFactor {
     public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
     }
+    public void setUnit(String unit) {
+    this.unit = unit;
+}
+
 }
