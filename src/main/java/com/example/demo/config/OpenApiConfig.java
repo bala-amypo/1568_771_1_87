@@ -19,11 +19,12 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Demo API")
-                        .version("1.0"))
+                        .version("1.0")
+                        .description("Carbon Footprint Estimator REST API")
+                )
                 .servers(List.of(
                         new Server().url("https://9092.pro604cr.amypo.ai")
                 ))
-                // 🔐 JWT Security Definition
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth",
                                 new SecurityScheme()
@@ -32,7 +33,6 @@ public class OpenApiConfig {
                                         .bearerFormat("JWT")
                         )
                 )
-                // 🔒 Apply security globally
                 .addSecurityItem(
                         new SecurityRequirement().addList("bearerAuth")
                 );
