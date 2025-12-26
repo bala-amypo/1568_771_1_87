@@ -2,51 +2,66 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.ActivityType;
 import com.example.demo.entity.EmissionFactor;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.repository.EmissionFactorRepository;
+import com.example.demo.service.EmissionFactorService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class EmissionFactorServiceImpl {
+@Service
+public class EmissionFactorServiceImpl implements EmissionFactorService {
 
-    private final EmissionFactorRepository factorRepository;
-    private final ActivityTypeRepository typeRepository;
+    private final EmissionFactorRepository emissionFactorRepository;
+    private final ActivityTypeRepository activityTypeRepository;
 
-    public EmissionFactorServiceImpl(EmissionFactorRepository factorRepository,
-                                     ActivityTypeRepository typeRepository) {
-        this.factorRepository = factorRepository;
-        this.typeRepository = typeRepository;
+    public EmissionFactorServiceImpl(EmissionFactorRepository emissionFactorRepository,
+                                     ActivityTypeRepository activityTypeRepository) {
+        this.emissionFactorRepository = emissionFactorRepository;
+        this.activityTypeRepository = activityTypeRepository;
     }
 
-    public EmissionFactor createFactor(Long activityTypeId, EmissionFactor factor) {
+    @Override
+    public EmissionFactor createEmissionFactor(Long activityTypeId, EmissionFactor factor) {
+        ActivityType activityType = activityTypeRepository.findById(activityTypeId)
+                .orElseThrow(() -> new RuntimeException("ActivityType not found"));
 
-        ActivityType type = typeRepository.findById(activityTypeId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Category not found"));
-
-        if (factor.getFactorValue() == null || factor.getFactorValue() <= 0) {
-            throw new ValidationException("Factor value must be greater than zero");
+        if (factor.getFactorValue() <= 0) {
+            throw new IllegalArgumentException("Invalid emission factor");
         }
 
-        factor.setActivityType(type);
-        return factorRepository.save(factor);
+        factor.setActivityType(activityType);
+        return emissionFactorRepository.save(factor);
     }
 
-    public EmissionFactor getFactor(Long id) {
-        return factorRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Emission factor not found"));
+    @Override
+    public List<EmissionFactor> getAllEmissionFactors() {
+        return emissionFactorRepository.findAll();
     }
 
-    public EmissionFactor getFactorByType(Long typeId) {
-        return factorRepository.findByActivityType_Id(typeId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Emission factor not found"));
+    @Override
+    public EmissionFactor getEmissionFactorById(Long id) {
+        return emissionFactorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("EmissionFactor not found"));
     }
 
-    public List<EmissionFactor> getAllFactors() {
-        return factorRepository.findAll();
+    @Override
+    public EmissionFactor updateEmissionFactor(Long id, EmissionFactor updatedFactor) {
+        EmissionFactor existing = getEmissionFactorById(id);
+
+        if (updatedFactor.getFactorValue() > 0) {
+            existing.setFactorValue(updatedFactor.getFactorValue());
+        }
+
+        if (updatedFactor.getUnit() != null) {
+            existing.setUnit(updatedFactor.getUnit());
+        }
+
+        return emissionFactorRepository.save(existing);
+    }
+
+    @Override
+    public void deleteEmissionFactor(Long id) {
+        emissionFactorRepository.deleteById(id);
     }
 }
