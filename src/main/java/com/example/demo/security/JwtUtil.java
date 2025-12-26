@@ -2,6 +2,8 @@ package com.example.demo.security;
 
 import com.example.demo.entity.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -37,13 +39,11 @@ public class JwtUtil {
                 .compact();
     }
 
-    public ParsedJwt parseToken(String token) {
-        Claims claims = Jwts.parserBuilder()
+    public Jwt<Header, Claims> parseToken(String token) {
+        return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return new ParsedJwt(claims);
+                .parse(token);
     }
 
     public String extractUsername(String token) {
@@ -60,17 +60,5 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token, String username) {
         return extractUsername(token).equals(username);
-    }
-
-    public static class ParsedJwt {
-        private final Claims payload;
-
-        public ParsedJwt(Claims payload) {
-            this.payload = payload;
-        }
-
-        public Claims getPayload() {
-            return payload;
-        }
     }
 }
