@@ -10,18 +10,19 @@ public class EmissionFactor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private ActivityType activityType;
 
-    private double factorValue;
+    private Double factorValue;
 
     private String unit;
 
     private LocalDateTime createdAt;
 
-    public EmissionFactor() {}
+    public EmissionFactor() {
+    }
 
-    public EmissionFactor(Long id, ActivityType activityType, double factorValue, String unit, LocalDateTime createdAt) {
+    public EmissionFactor(Long id, ActivityType activityType, Double factorValue, String unit, LocalDateTime createdAt) {
         this.id = id;
         this.activityType = activityType;
         this.factorValue = factorValue;
@@ -34,17 +35,31 @@ public class EmissionFactor {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+    public ActivityType getActivityType() {
+        return activityType;
+    }
 
-    public double getFactorValue() { return factorValue; }
-    public void setFactorValue(double factorValue) { this.factorValue = factorValue; }
+    public Double getFactorValue() {
+        return factorValue;
+    }
 
-    public String getUnit() { return unit; }
-    public void setUnit(String unit) { this.unit = unit; }
+    public String getUnit() {
+        return unit;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setFactorValue(Double factorValue) {
+        this.factorValue = factorValue;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
 }
