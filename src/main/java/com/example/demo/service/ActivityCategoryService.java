@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface ActivityCategoryService {
     ActivityCategory createCategory(ActivityCategory category);
-    ActivityCategory getCategory(long id);
+    ActivityCategory getCategory(Long id);
     List<ActivityCategory> getAllCategories();
 }
