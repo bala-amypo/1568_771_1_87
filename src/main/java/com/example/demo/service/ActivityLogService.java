@@ -8,4 +8,5 @@ public interface ActivityLogService {
     ActivityLog logActivity(Long userId, Long typeId, ActivityLog log);
     List<ActivityLog> getLogsByUser(Long userId);
     List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate start, LocalDate end);
+    ActivityLog getLog(Long id);
 }
