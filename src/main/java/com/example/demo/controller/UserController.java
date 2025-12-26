@@ -19,5 +19,18 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        return userService.registerUser(user);
+    }
     
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @GetMapping("/email/{email}")
+    public User getByEmail(@PathVariable String email) {
+        return userService.getByEmail(email);
+    }
 }
