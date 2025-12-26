@@ -1,22 +1,19 @@
 package com.example.demo.exception;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.http.ResponseEntity;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException ex) {
-        return ResponseEntity.status(404).body(Map.of("timestamp",LocalDateTime.now(), "message", ex.getMessage()));
-    }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> handleValidationException(ValidationException ex) {
-        return ResponseEntity.status(400).body(Map.of("timestamp",LocalDateTime.now(), "message", ex.getMessage()));
+    public ResponseEntity<String> handleValidation(ValidationException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity.status(404).body(ex.getMessage());
     }
 }
