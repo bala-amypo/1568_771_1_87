@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.EmissionFactor;
-import com.example.demo.service.impl.EmissionFactorServiceImpl;
+import com.example.demo.service.EmissionFactorService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,30 +10,29 @@ import java.util.List;
 @RequestMapping("/api/factors")
 public class EmissionFactorController {
 
-    private final EmissionFactorServiceImpl factorService;
+    private final EmissionFactorService factorService;
 
-    public EmissionFactorController(EmissionFactorServiceImpl factorService) {
+    public EmissionFactorController(EmissionFactorService factorService) {
         this.factorService = factorService;
     }
 
-    @PostMapping("/type/{typeId}")
-    public EmissionFactor createFactor(@PathVariable Long typeId,
-                                       @RequestBody EmissionFactor factor) {
-        return factorService.createFactor(typeId, factor);
+    @PostMapping("/{activityTypeId}")
+    public EmissionFactor createFactor(@PathVariable long activityTypeId, @RequestBody EmissionFactor factor) {
+        return factorService.createFactor(activityTypeId, factor);
     }
 
     @GetMapping("/{id}")
-    public EmissionFactor getFactor(@PathVariable Long id) {
+    public EmissionFactor getFactor(@PathVariable long id) {
         return factorService.getFactor(id);
     }
 
-    @GetMapping("/type/{typeId}")
-    public EmissionFactor getByType(@PathVariable Long typeId) {
-        return factorService.getFactorByType(typeId);
+    @GetMapping("/type/{activityTypeId}")
+    public EmissionFactor getFactorByType(@PathVariable long activityTypeId) {
+        return factorService.getFactorByType(activityTypeId);
     }
 
     @GetMapping
-    public List<EmissionFactor> getAll() {
+    public List<EmissionFactor> getAllFactors() {
         return factorService.getAllFactors();
     }
 }
