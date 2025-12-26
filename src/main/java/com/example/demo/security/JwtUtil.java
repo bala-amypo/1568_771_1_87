@@ -2,13 +2,10 @@ package com.example.demo.security;
 
 import com.example.demo.entity.User;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -20,73 +17,50 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    // Generate JWT token with claims: userId, role, email
     public String generateTokenForUser(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
-        claims.put("role", user.getRole());
-        claims.put("email", user.getEmail());
+        Map<String, Object> claims = Map.of(
+                "userId", user.getId(),
+                "role", user.getRole(),
+                "email", user.getEmail()
+        );
+        return generateToken(claims, user.getEmail());
+    }
 
+    // Generic token generator for tests
+    public String generateToken(Map<String, Object> claims, String username) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(user.getEmail())
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
-    // Generate token with custom claims and subject (used in tests)
-    public String generateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
-                .compact();
+    public Claims parseToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    // Extract email (subject) from JWT
     public String extractEmail(String token) {
-        return getClaims(token).getSubject();
+        return parseToken(token).getSubject();
     }
 
-    // Extract userId claim
-    public Long extractUserId(String token) {
-        Object id = getClaims(token).get("userId");
-        if (id instanceof Integer) {
-            return ((Integer) id).longValue();
-        } else if (id instanceof Long) {
-            return (Long) id;
-        } else {
-            return null;
-        }
+    public long extractUserId(String token) {
+        return parseToken(token).get("userId", Integer.class).longValue();
     }
 
-    // Extract role claim
     public String extractRole(String token) {
-        return getClaims(token).get("role", String.class);
+        return parseToken(token).get("role", String.class);
     }
 
-    // Validate token: check email and expiration
     public boolean isTokenValid(String token, String email) {
         return extractEmail(token).equals(email) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
-        return getClaims(token).getExpiration().before(new Date());
-    }
-
-    private Claims getClaims(String token) {
-        return parseToken(token).getBody();
-    }
-
-    // Parse JWT token and return Jws<Claims> for tests
-    public Jws<Claims> parseToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
-                .build()
-                .parseClaimsJws(token);
+        return parseToken(token).getExpiration().before(new Date());
     }
 }
