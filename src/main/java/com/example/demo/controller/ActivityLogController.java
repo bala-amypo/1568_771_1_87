@@ -38,4 +38,9 @@ public class ActivityLogController {
                                        @RequestParam LocalDate end) {
         return logService.getLogsByUserAndDate(userId, start, end);
     }
+
+     @GetMapping("/{id}")
+    public ActivityLog getLog(@PathVariable Long id) {
+        return logService.getLog(id);
+    }
 }

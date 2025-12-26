@@ -54,4 +54,10 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     public List<ActivityLog> getLogsByUserAndDate(Long userId, LocalDate start, LocalDate end) {
         return logRepository.findByUser_IdAndActivityDateBetween(userId, start, end);
     }
+
+    @Override
+    public ActivityLog getLog(Long id) {
+        return logRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Activity log not found"));
+    }
 }
