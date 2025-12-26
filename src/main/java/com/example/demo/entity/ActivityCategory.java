@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "activity_categories")
 public class ActivityCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     private String categoryName;
@@ -18,41 +17,24 @@ public class ActivityCategory {
 
     private LocalDateTime createdAt;
 
-    public ActivityCategory() {
+    public ActivityCategory() {}
+
+    public ActivityCategory(Long id, String categoryName, String description, LocalDateTime createdAt) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.createdAt = createdAt;
     }
 
     @PrePersist
     public void prePersist() {
-        if (this.categoryName == null || this.categoryName.isBlank()) {
-            this.categoryName = "UNNAMED";
-        }
-        if (this.description == null) {
-            this.description = "";
-        }
         this.createdAt = LocalDateTime.now();
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }
