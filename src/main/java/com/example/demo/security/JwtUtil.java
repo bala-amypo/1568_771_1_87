@@ -24,50 +24,37 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(Map<String, Object> claims, String subject) {
+    public String generateTokenForUser(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", user.getEmail());
+        claims.put("role", user.getRole());
+        claims.put("userId", user.getId());
+
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateTokenForUser(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", user.getEmail());
-        claims.put("role", user.getRole());
-        claims.put("userId", user.getId());
-        return generateToken(claims, user.getEmail());
-    }
-
     public Jws<Claims> parseToken(String token) {
-        return Jwts.parserBuilder()
+        return Jwts.parser()
                 .setSigningKey(getSigningKey())
-                .build()
                 .parseClaimsJws(token);
     }
 
     public String extractUsername(String token) {
-        return parseToken(token).getPayload().getSubject();
-    }
-
-    public String extractRole(String token) {
-        return (String) parseToken(token).getPayload().get("role");
-    }
-
-    public Long extractUserId(String token) {
-        Object id = parseToken(token).getPayload().get("userId");
-        return id == null ? null : Long.valueOf(id.toString());
+        return parseToken(token).getBody().getSubject();
     }
 
     public boolean isTokenValid(String token, String username) {
         try {
-            Claims claims = parseToken(token).getPayload();
+            Claims claims = parseToken(token).getBody();
             return claims.getSubject().equals(username)
-                    && !claims.getExpiration().before(new Date());
-        } catch (Exception ex) {
+                    && claims.getExpiration().after(new Date());
+        } catch (Exception e) {
             return false;
         }
     }

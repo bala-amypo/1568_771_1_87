@@ -54,4 +54,12 @@ public class User {
     public void setRole(String role) { this.role = role; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setFullName(String fullName) {
+    this.name = fullName;
+}
+
+public String getFullName() {
+    return this.name;
+}
+
 }
