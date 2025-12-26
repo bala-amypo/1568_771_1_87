@@ -7,7 +7,7 @@ import com.example.demo.repository.*;
 import com.example.demo.service.ActivityLogService;
 import java.time.LocalDate;
 import java.util.List;
-
+@Service
 public class ActivityLogServiceImpl implements ActivityLogService {
 
     private final ActivityLogRepository logRepository;

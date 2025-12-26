@@ -8,7 +8,7 @@ import com.example.demo.repository.EmissionFactorRepository;
 import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.service.EmissionFactorService;
 import java.util.List;
-
+@Service
 public class EmissionFactorServiceImpl implements EmissionFactorService {
 
     private final EmissionFactorRepository factorRepository;
