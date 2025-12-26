@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class ActivityLog {
@@ -10,47 +11,54 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double quantity;
-
-    private Double estimatedEmission;
-
-    private LocalDate activityDate;
+    @ManyToOne
+    private ActivityType activityType;
 
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private ActivityType activityType;
+    private Double quantity;
 
-    public ActivityLog() {
+    private LocalDate activityDate;
+
+    private LocalDateTime loggedAt;
+
+    private Double estimatedEmission;
+
+    public ActivityLog() {}
+
+    // ✅ Constructor REQUIRED by tests
+    public ActivityLog(Long id,
+                       ActivityType activityType,
+                       User user,
+                       Double quantity,
+                       LocalDate activityDate,
+                       LocalDateTime loggedAt,
+                       Double estimatedEmission) {
+        this.id = id;
+        this.activityType = activityType;
+        this.user = user;
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+        this.loggedAt = loggedAt;
+        this.estimatedEmission = estimatedEmission;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.loggedAt = LocalDateTime.now();
     }
 
     public Long getId() {
         return id;
     }
 
-    public Double getQuantity() {
-        return quantity;
+    public ActivityType getActivityType() {
+        return activityType;
     }
 
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getEstimatedEmission() {
-        return estimatedEmission;
-    }
-
-    public void setEstimatedEmission(Double estimatedEmission) {
-        this.estimatedEmission = estimatedEmission;
-    }
-
-    public LocalDate getActivityDate() {
-        return activityDate;
-    }
-
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 
     public User getUser() {
@@ -61,11 +69,23 @@ public class ActivityLog {
         this.user = user;
     }
 
-    public ActivityType getActivityType() {
-        return activityType;
+    public Double getQuantity() {
+        return quantity;
     }
 
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
+
+    public LocalDateTime getLoggedAt() {
+        return loggedAt;
+    }
+
+    public Double getEstimatedEmission() {
+        return estimatedEmission;
+    }
+
+    public void setEstimatedEmission(Double estimatedEmission) {
+        this.estimatedEmission = estimatedEmission;
     }
 }
