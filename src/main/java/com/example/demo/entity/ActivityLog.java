@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 public class ActivityLog {
@@ -11,44 +10,62 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private ActivityType activityType;
+    private Double quantity;
+
+    private Double estimatedEmission;
+
+    private LocalDate activityDate;
 
     @ManyToOne
     private User user;
 
-    private Double quantity;
+    @ManyToOne
+    private ActivityType activityType;
 
-    private LocalDate activityDate;
+    public ActivityLog() {
+    }
 
-    private LocalDateTime loggedAt;
+    public Long getId() {
+        return id;
+    }
 
-    private Double estimatedEmission;
+    public Double getQuantity() {
+        return quantity;
+    }
 
-    public ActivityLog() {}
-
-    public ActivityLog(Long id, ActivityType activityType, User user, Double quantity,
-                       LocalDate activityDate, LocalDateTime loggedAt, Double estimatedEmission) {
-        this.id = id;
-        this.activityType = activityType;
-        this.user = user;
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
-        this.activityDate = activityDate;
-        this.loggedAt = loggedAt;
+    }
+
+    public Double getEstimatedEmission() {
+        return estimatedEmission;
+    }
+
+    public void setEstimatedEmission(Double estimatedEmission) {
         this.estimatedEmission = estimatedEmission;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.loggedAt = LocalDateTime.now();
+    public LocalDate getActivityDate() {
+        return activityDate;
     }
 
-    // getters & setters
-    public Double getQuantity() { return quantity; }
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
-    public Double getEstimatedEmission() { return estimatedEmission; }
-    public void setEstimatedEmission(Double estimatedEmission) { this.estimatedEmission = estimatedEmission; }
-    public ActivityType getActivityType() { return activityType; }
-    public User getUser() { return user; }
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
 }

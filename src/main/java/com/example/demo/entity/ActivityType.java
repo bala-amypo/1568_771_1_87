@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class ActivityType {
@@ -12,30 +11,39 @@ public class ActivityType {
 
     private String typeName;
 
+    private String unit;
+
     @ManyToOne
     private ActivityCategory category;
 
-    private String unit;
+    public ActivityType() {
+    }
 
-    private LocalDateTime createdAt;
+    public Long getId() {
+        return id;
+    }
 
-    public ActivityType() {}
+    public String getTypeName() {
+        return typeName;
+    }
 
-    public ActivityType(Long id, String typeName, ActivityCategory category, String unit, LocalDateTime createdAt) {
-        this.id = id;
+    public void setTypeName(String typeName) {
         this.typeName = typeName;
-        this.category = category;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
         this.unit = unit;
-        this.createdAt = createdAt;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public ActivityCategory getCategory() {
+        return category;
     }
 
-    // getters & setters
-    public Long getId() { return id; }
-    public ActivityCategory getCategory() { return category; }
-    public String getUnit() { return unit; }
+    public void setCategory(ActivityCategory category) {
+        this.category = category;
+    }
 }
