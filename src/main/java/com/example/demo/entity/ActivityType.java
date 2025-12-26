@@ -12,21 +12,16 @@ public class ActivityType {
 
     private String typeName;
 
+    @ManyToOne
+    private ActivityCategory category;
+
     private String unit;
 
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    private ActivityCategory category;
-
     public ActivityType() {}
 
-    // ✅ Constructor REQUIRED by tests
-    public ActivityType(Long id,
-                        String typeName,
-                        ActivityCategory category,
-                        String unit,
-                        LocalDateTime createdAt) {
+    public ActivityType(Long id, String typeName, ActivityCategory category, String unit, LocalDateTime createdAt) {
         this.id = id;
         this.typeName = typeName;
         this.category = category;
@@ -39,31 +34,17 @@ public class ActivityType {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getTypeName() {
-        return typeName;
-    }
+    public String getTypeName() { return typeName; }
+    public void setTypeName(String typeName) { this.typeName = typeName; }
 
-    public String getUnit() {
-        return unit;
-    }
+    public ActivityCategory getCategory() { return category; }
+    public void setCategory(ActivityCategory category) { this.category = category; }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
+    public String getUnit() { return unit; }
+    public void setUnit(String unit) { this.unit = unit; }
 
-    public ActivityCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(ActivityCategory category) {
-        this.category = category;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }
