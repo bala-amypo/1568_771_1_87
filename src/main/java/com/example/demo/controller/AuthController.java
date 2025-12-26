@@ -4,8 +4,7 @@ import com.example.demo.dto.*;
 import com.example.demo.entity.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,11 +33,7 @@ public class AuthController {
         User user = new User();
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
-
-        // ✅ CRITICAL FIX
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        // set default role if null
+        user.setPassword(request.getPassword()); // will be encoded in service
         user.setRole("USER");
 
         return userService.registerUser(user);
@@ -47,6 +42,7 @@ public class AuthController {
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
 
+        // Authenticate using email and password
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -55,13 +51,9 @@ public class AuthController {
         );
 
         User user = userService.getByEmail(request.getEmail());
+
         String token = jwtUtil.generateTokenForUser(user);
 
-        return new JwtResponse(
-                token,
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
+        return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
     }
 }
