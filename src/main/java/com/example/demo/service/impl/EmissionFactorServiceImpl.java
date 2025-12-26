@@ -22,12 +22,12 @@ public class EmissionFactorServiceImpl implements EmissionFactorService {
     }
 
     @Override
-    public EmissionFactor createEmissionFactor(Long activityTypeId, EmissionFactor factor) {
+    public EmissionFactor createFactor(Long activityTypeId, EmissionFactor factor) {
         ActivityType activityType = activityTypeRepository.findById(activityTypeId)
                 .orElseThrow(() -> new RuntimeException("ActivityType not found"));
 
         if (factor.getFactorValue() <= 0) {
-            throw new IllegalArgumentException("Invalid emission factor");
+            throw new IllegalArgumentException("Invalid factor value");
         }
 
         factor.setActivityType(activityType);
@@ -35,19 +35,29 @@ public class EmissionFactorServiceImpl implements EmissionFactorService {
     }
 
     @Override
-    public List<EmissionFactor> getAllEmissionFactors() {
-        return emissionFactorRepository.findAll();
-    }
-
-    @Override
-    public EmissionFactor getEmissionFactorById(Long id) {
+    public EmissionFactor getFactor(Long id) {
         return emissionFactorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("EmissionFactor not found"));
     }
 
     @Override
-    public EmissionFactor updateEmissionFactor(Long id, EmissionFactor updatedFactor) {
-        EmissionFactor existing = getEmissionFactorById(id);
+    public EmissionFactor getFactorByType(Long activityTypeId) {
+        return emissionFactorRepository.findAll()
+                .stream()
+                .filter(f -> f.getActivityType() != null
+                        && f.getActivityType().getId().equals(activityTypeId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("EmissionFactor not found for activity type"));
+    }
+
+    @Override
+    public List<EmissionFactor> getAllFactors() {
+        return emissionFactorRepository.findAll();
+    }
+
+    @Override
+    public EmissionFactor updateFactor(Long id, EmissionFactor updatedFactor) {
+        EmissionFactor existing = getFactor(id);
 
         if (updatedFactor.getFactorValue() > 0) {
             existing.setFactorValue(updatedFactor.getFactorValue());
@@ -61,7 +71,7 @@ public class EmissionFactorServiceImpl implements EmissionFactorService {
     }
 
     @Override
-    public void deleteEmissionFactor(Long id) {
+    public void deleteFactor(Long id) {
         emissionFactorRepository.deleteById(id);
     }
 }
