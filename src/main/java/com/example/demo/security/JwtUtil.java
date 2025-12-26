@@ -1,8 +1,13 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
@@ -34,24 +39,23 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims parseToken(String token) {
+    public Jwt<Header, Claims> parseToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parse(token);
     }
 
     public String extractUsername(String token) {
-        return parseToken(token).getSubject();
+        return parseToken(token).getPayload().getSubject();
     }
 
     public String extractRole(String token) {
-        return parseToken(token).get("role", String.class);
+        return parseToken(token).getPayload().get("role", String.class);
     }
 
     public Long extractUserId(String token) {
-        return parseToken(token).get("userId", Long.class);
+        return parseToken(token).getPayload().get("userId", Long.class);
     }
 
     public boolean isTokenValid(String token, String username) {

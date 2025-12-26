@@ -55,15 +55,15 @@ public class EmissionFactor {
         return createdAt;
     }
 
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
     public void setFactorValue(Double factorValue) {
         this.factorValue = factorValue;
     }
 
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
     public void setUnit(String unit) {
-    this.unit = unit;
-}
-
+        this.unit = unit;
+    }
 }
