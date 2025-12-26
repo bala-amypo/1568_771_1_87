@@ -7,6 +7,8 @@ import com.example.demo.repository.*;
 import com.example.demo.service.ActivityLogService;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.stereotype.Service;
+
 @Service
 public class ActivityLogServiceImpl implements ActivityLogService {
 

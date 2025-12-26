@@ -8,6 +8,8 @@ import com.example.demo.repository.EmissionFactorRepository;
 import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.service.EmissionFactorService;
 import java.util.List;
+import org.springframework.stereotype.Service;
+
 @Service
 public class EmissionFactorServiceImpl implements EmissionFactorService {
 

@@ -8,6 +8,8 @@ import com.example.demo.repository.ActivityTypeRepository;
 import com.example.demo.repository.ActivityCategoryRepository;
 import com.example.demo.service.ActivityTypeService;
 import java.util.List;
+import org.springframework.stereotype.Service;
+
 @Service
 public class ActivityTypeServiceImpl implements ActivityTypeService {
 
